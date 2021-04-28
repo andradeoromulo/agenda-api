@@ -1,0 +1,256 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "API para cadastro de endereços de usuários.",
+    "version": "1.0.0",
+    "title": "API Agenda"
+  },
+  "tags": [
+    {
+      "name": "Usuários"
+    }
+  ],
+  "paths": {
+    "/usuarios": {
+      "post": {
+        "tags": [
+          "Usuários"
+        ],
+        "summary": "Cadastra um novo usuário.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Informações do novo usuário a ser cadastrado.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UsuarioRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso.",
+            "schema": {
+              "$ref": "#/definitions/UsuarioResponse"
+            }
+          },
+          "400": {
+            "description": "Requisição inválida"
+          }
+        }
+      }
+    },
+    "/usuarios/{id}/enderecos": {
+      "post": {
+        "tags": [
+          "Usuários"
+        ],
+        "summary": "Cadastra um novo endereço associado a um usuário.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do usuário",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Informações do novo endereço a ser cadastrado",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/EnderecoRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Endereço criado com sucesso.",
+            "schema": {
+              "$ref": "#/definitions/EnderecoResponse"
+            }
+          },
+          "400": {
+            "description": "Requisição inválida."
+          },
+          "404": {
+            "description": "Usuário não encontrado."
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Usuários"
+        ],
+        "summary": "Recupera informações do usuário e de seus endereços associados",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do usuário",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Informações recuperadas com sucesso.",
+            "schema": {
+              "$ref": "#/definitions/UsuarioComEnderecoResponse"
+            }
+          },
+          "400": {
+            "description": "Requisição inválida."
+          },
+          "404": {
+            "description": "Usuário não encontrado."
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "petstore_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "write:pets": "modify pets in your account",
+        "read:pets": "read your pets"
+      }
+    },
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "UsuarioRequest": {
+      "type": "object",
+      "properties": {
+        "nome": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "cpf": {
+          "type": "string"
+        },
+        "dataNascimento": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "UsuarioResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "nome": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "cpf": {
+          "type": "string"
+        },
+        "dataNascimento": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "EnderecoRequest": {
+      "type": "object",
+      "properties": {
+        "logradouro": {
+          "type": "string"
+        },
+        "numero": {
+          "type": "string"
+        },
+        "complemento": {
+          "type": "string"
+        },
+        "bairro": {
+          "type": "string"
+        },
+        "cidade": {
+          "type": "string"
+        },
+        "estado": {
+          "type": "string"
+        },
+        "cep": {
+          "type": "string"
+        }
+      }
+    },
+    "EnderecoResponse": {
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "logradouro": {
+          "type": "string"
+        },
+        "numero": {
+          "type": "string"
+        },
+        "complemento": {
+          "type": "string"
+        },
+        "bairro": {
+          "type": "string"
+        },
+        "cidade": {
+          "type": "string"
+        },
+        "estado": {
+          "type": "string"
+        },
+        "cep": {
+          "type": "string"
+        }
+      }
+    },
+    "UsuarioComEnderecoResponse": {
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "nome": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "cpf": {
+          "type": "string"
+        },
+        "dataNascimento": {
+          "type": "string",
+          "format": "date"
+        },
+        "enderecos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EnderecoResponse"
+          }
+        }
+      }
+    }
+  }
+}
