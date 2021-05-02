@@ -44,7 +44,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/{usuarioId}/enderecos")
-    public ResponseEntity<?> cadastrarEndereco(@PathVariable Long usuarioId, @RequestBody @Valid EnderecoForm enderecoForm) {
+    public ResponseEntity<EnderecoDTO> cadastrarEndereco(@PathVariable Long usuarioId, @RequestBody @Valid EnderecoForm enderecoForm) {
 
         Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
 
@@ -58,7 +58,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{usuarioId}/enderecos")
-    public ResponseEntity<?> consultarEnderecos(@PathVariable Long usuarioId) {
+    public ResponseEntity<UsuarioComEnderecoDTO> consultarEnderecos(@PathVariable Long usuarioId) {
 
         Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
 
